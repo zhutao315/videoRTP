@@ -1,5 +1,5 @@
 {
-  "name": "videoRTP",
+  "name": "video-rtp",
   "version": "0.0.1",
   "description": "Real time video transmission in Web",
   "main": "lib/index.js",
