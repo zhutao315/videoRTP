@@ -6,3 +6,7 @@ node_modules/
 /public
 *yarn*
 *.log*
+.prettierrc
+package-lock.json
+rollup.base.config.js
+rollup.config.js

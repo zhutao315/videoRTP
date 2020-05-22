@@ -1,6 +1,6 @@
 {
   "name": "video-rtp",
-  "version": "0.0.2",
+  "version": "0.1.6",
   "description": "Real time video transmission in Web",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,8 @@
   },
   "files": [
     "src",
-    "lib"
+    "lib",
+    "videoRTP.min.js"
   ],
   "repository": {
     "type": "git",

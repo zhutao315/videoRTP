@@ -1,11 +1,10 @@
-# [video-rtp]() - [Demos]()
+# [video-rtp](https://github.com/zhutao315/videoRTP)
 
-[![npm](https://img.shields.io/npm/v/msr.svg)](https://www.npmjs.com/package/video-rtp)
+[![npm](https://img.shields.io/npm/v/video-rtp.svg)](https://www.npmjs.com/package/video-rtp)
 
 A cross-browser implementation to record video on real time
 
-1. Use webRTC/mediaRecord first
-2. Degrade to use "input[type = file]" when not support webRTC
+> <br>1. Use webRTC/mediaRecord first <br>2. Degrade to use "input[type = file]" when not support webRTC
 
 video-rtp can open the camera and record video to a series of blobs.
 You can upload the recorded blobs in realtime to the server! Or you can get the blobs and combine to a smaller video after specific time-intervals.
@@ -119,6 +118,19 @@ openVideo({
 
 # API Documentation
 
+| Name                   | Type          | Default       | Description                                                                                                                                               |
+| ---------------| ------------- | ------------- | ---------------------------------------------------------------|
+| `video`        |  String/DOM  |       -       | Display video recorded by the camera |
+| `duration`        |  Number  |       100(ms)       | The time interval when Canvas draws frames |
+| `collectTime`        |  Number  |       1000(ms)      | The time length of chunks by mediaRecord record |
+| `MINSIZE`        |  Number  |       1M       | If the video size is lower than this value, the video will be returned without processing |
+| `MAXTIME`        |  Number  |       15(m)      | The Maximum duration of the upload video  |
+| `chunks`        |  Function  |       () => { }       | The callback Function executed each time when the screen is recorded.<br> The param is a blob and the blob's type is webm/webp |
+| `ended`        |  Function  |       () => { }       | The callback Function executed when the record is end |
+| `degrade`        |  String/DOM/Boolen  |       -       | The degrage is usefull when the webRTC is not supported |
+
+
+> When the "degrade" is a string, the component will find the DOM by id/class. The dom will bind a click event to open the local video. When the value of "degrade" is true, the openVideo function will open the local video directly. 
 
 ## License
 
