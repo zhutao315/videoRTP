@@ -7,7 +7,7 @@ export default (configs) => {
     return {
       input: config.input,
       output: {
-        name: config.file,
+        name: config.name,
         file: config.file,
         format: config.format || 'cjs',
         sourcemap: false,

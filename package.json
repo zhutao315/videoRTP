@@ -1,6 +1,6 @@
 {
   "name": "video-rtp",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "Real time video transmission in Web",
   "main": "lib/index.js",
   "scripts": {
