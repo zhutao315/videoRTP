@@ -1,44 +1,15 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.videoRTP = {}));
-}(this, (function (exports) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime-corejs3/core-js-stable/promise'), require('@babel/runtime-corejs3/regenerator'), require('@babel/runtime-corejs3/helpers/asyncToGenerator'), require('@babel/runtime-corejs3/core-js-stable/instance/concat'), require('@babel/runtime-corejs3/core-js-stable/set-interval'), require('@babel/runtime-corejs3/core-js-stable/object/assign')) :
+  typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime-corejs3/core-js-stable/promise', '@babel/runtime-corejs3/regenerator', '@babel/runtime-corejs3/helpers/asyncToGenerator', '@babel/runtime-corejs3/core-js-stable/instance/concat', '@babel/runtime-corejs3/core-js-stable/set-interval', '@babel/runtime-corejs3/core-js-stable/object/assign'], factory) :
+  (global = global || self, factory(global.videoRTP = {}, global._Promise, global._regeneratorRuntime, global._asyncToGenerator, global._concatInstanceProperty, global._setInterval, global._Object$assign));
+}(this, (function (exports, _Promise, _regeneratorRuntime, _asyncToGenerator, _concatInstanceProperty, _setInterval, _Object$assign) { 'use strict';
 
-  function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-    try {
-      var info = gen[key](arg);
-      var value = info.value;
-    } catch (error) {
-      reject(error);
-      return;
-    }
-
-    if (info.done) {
-      resolve(value);
-    } else {
-      Promise.resolve(value).then(_next, _throw);
-    }
-  }
-
-  function _asyncToGenerator(fn) {
-    return function () {
-      var self = this,
-          args = arguments;
-      return new Promise(function (resolve, reject) {
-        var gen = fn.apply(self, args);
-
-        function _next(value) {
-          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-        }
-
-        function _throw(err) {
-          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-        }
-
-        _next(undefined);
-      });
-    };
-  }
+  _Promise = _Promise && Object.prototype.hasOwnProperty.call(_Promise, 'default') ? _Promise['default'] : _Promise;
+  _regeneratorRuntime = _regeneratorRuntime && Object.prototype.hasOwnProperty.call(_regeneratorRuntime, 'default') ? _regeneratorRuntime['default'] : _regeneratorRuntime;
+  _asyncToGenerator = _asyncToGenerator && Object.prototype.hasOwnProperty.call(_asyncToGenerator, 'default') ? _asyncToGenerator['default'] : _asyncToGenerator;
+  _concatInstanceProperty = _concatInstanceProperty && Object.prototype.hasOwnProperty.call(_concatInstanceProperty, 'default') ? _concatInstanceProperty['default'] : _concatInstanceProperty;
+  _setInterval = _setInterval && Object.prototype.hasOwnProperty.call(_setInterval, 'default') ? _setInterval['default'] : _setInterval;
+  _Object$assign = _Object$assign && Object.prototype.hasOwnProperty.call(_Object$assign, 'default') ? _Object$assign['default'] : _Object$assign;
 
   // Put variables in global scope to make them available to the browser console.
   var constraints = window.constraints = {
@@ -57,8 +28,10 @@
 
   function handleError(error) {
     if (error.name === 'ConstraintNotSatisfiedError') {
+      var _context;
+
       var v = constraints.video;
-      errorMsg("The resolution ".concat(v.width.exact, "x").concat(v.height.exact, " px is not supported by your device."));
+      errorMsg(_concatInstanceProperty(_context = "The resolution ".concat(v.width.exact, "x")).call(_context, v.height.exact, " px is not supported by your device."));
     } else if (error.name === 'PermissionDeniedError') {
       errorMsg('Permissions have not been granted to use your camera and ' + 'microphone, you need to allow the page access to your devices in ' + 'order for the demo to work.');
     }
@@ -80,30 +53,30 @@
   }
 
   function _openRTC() {
-    _openRTC = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(element) {
+    _openRTC = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(element) {
       var stream;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime.wrap(function _callee$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
-              _context.prev = 0;
-              _context.next = 3;
+              _context2.prev = 0;
+              _context2.next = 3;
               return navigator.mediaDevices.getUserMedia(constraints);
 
             case 3:
-              stream = _context.sent;
+              stream = _context2.sent;
               handleSuccess(stream, element);
-              return _context.abrupt("return", stream);
+              return _context2.abrupt("return", stream);
 
             case 8:
-              _context.prev = 8;
-              _context.t0 = _context["catch"](0);
-              handleError(_context.t0);
-              return _context.abrupt("return", Promise.reject(_context.t0));
+              _context2.prev = 8;
+              _context2.t0 = _context2["catch"](0);
+              handleError(_context2.t0);
+              return _context2.abrupt("return", _Promise.reject(_context2.t0));
 
             case 12:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
       }, _callee, null, [[0, 8]]);
@@ -211,7 +184,7 @@
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var timer = null;
     var endFunc = null;
-    var promise = new Promise(function (resolve) {
+    var promise = new _Promise(function (resolve) {
       return endFunc = resolve;
     }); // 视频开始播放
 
@@ -241,7 +214,7 @@
       var context = canvas.getContext('2d');
       var videoHeight = getVideoHeight();
       var videoWidth = getVideoWidth();
-      timer = setInterval(function () {
+      timer = _setInterval(function () {
         context.drawImage(video, 0, 0, videoHeight, videoWidth);
         canvas.toBlob(function (blob) {
           cb && cb(blob);
@@ -302,7 +275,7 @@
 
   function getVideo() {
     var input = getInput();
-    return new Promise(function (resolve) {
+    return new _Promise(function (resolve) {
       input.onchange = function (e) {
         resolve(e.target.files[0]);
       };
@@ -337,7 +310,7 @@
   function getFileURL(file) {
     var createObjectURL = URL.createObjectURL;
     if (createObjectURL) return createObjectURL(file);
-    return new Promise(function (resolve) {
+    return new _Promise(function (resolve) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
 
@@ -360,56 +333,58 @@
   }
 
   function _pressVideo() {
-    _pressVideo = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(videoFile, cb, options) {
+    _pressVideo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(videoFile, cb, options) {
       var video, record;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime.wrap(function _callee$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
-              _context.prev = 0;
-              options && Object.assign(config, options); // 自定义配置
+              _context2.prev = 0;
+              options && _Object$assign(config, options); // 自定义配置
 
               video = createPlayVideo(); // 视频太小，可直接返回文件
 
               if (!(videoFile.size < config.MINSIZE)) {
-                _context.next = 7;
+                _context2.next = 7;
                 break;
               }
 
               console.info("\u89C6\u9891\u5C0F\u4E8E".concat(config.MINSIZE, ", \u4E0D\u505A\u5904\u7406"));
               cb && cb(videoFile);
-              return _context.abrupt("return", videoFile);
+              return _context2.abrupt("return", videoFile);
 
             case 7:
               record = CanvasRecord(video, cb, options); // 监听play事件，准备录屏
 
               video.onloadedmetadata = function () {
                 if (video.duration > config.MAXTIME) {
+                  var _context;
+
                   URL.revokeObjectURL(video.src); // 释放blob资源
 
                   record.stop(); // 移除video的监听事件
 
-                  throw new Error("\u89C6\u9891\u65F6\u957F".concat(video.duration, "\u8D85\u8FC7").concat(config.MAXTIME));
+                  throw new Error(_concatInstanceProperty(_context = "\u89C6\u9891\u65F6\u957F".concat(video.duration, "\u8D85\u8FC7")).call(_context, config.MAXTIME));
                 }
               };
 
-              _context.next = 11;
+              _context2.next = 11;
               return getFileURL(videoFile);
 
             case 11:
-              video.src = _context.sent;
+              video.src = _context2.sent;
               video.play();
-              return _context.abrupt("return", record);
+              return _context2.abrupt("return", record);
 
             case 16:
-              _context.prev = 16;
-              _context.t0 = _context["catch"](0);
-              console.error(_context.t0);
-              return _context.abrupt("return", Promise.reject(_context.t0));
+              _context2.prev = 16;
+              _context2.t0 = _context2["catch"](0);
+              console.error(_context2.t0);
+              return _context2.abrupt("return", _Promise.reject(_context2.t0));
 
             case 20:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
       }, _callee, null, [[0, 16]]);
@@ -460,9 +435,9 @@
 
 
   function _degrade() {
-    _degrade = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(config) {
+    _degrade = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(config) {
       var file, record;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
+      return _regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
@@ -493,9 +468,9 @@
   }
 
   function _openVideo() {
-    _openVideo = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(config) {
+    _openVideo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2(config) {
       var isWebrtcSurport, stream, record$1, resolveP, promise;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return _regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
@@ -526,7 +501,7 @@
                 break;
               }
 
-              return _context2.abrupt("return", Promise.reject({
+              return _context2.abrupt("return", _Promise.reject({
                 isWebrtcSurport: false
               }));
 
@@ -545,7 +520,7 @@
               }
 
               resolveP = null;
-              promise = new Promise(function (resolve) {
+              promise = new _Promise(function (resolve) {
                 return resolveP = resolve;
               });
               getDOM(config.degrade).addEventListener('click', function () {

@@ -20,6 +20,7 @@ export default (configs) => {
       plugins: [
         resolve(),
         babel({
+          runtimeHelpers: true,
           exclude: ['node_modules/**'],
         }),
         config.env === 'prod' && uglify(),

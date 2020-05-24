@@ -1,6 +1,6 @@
 {
   "name": "video-rtp",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Real time video transmission in Web",
   "main": "lib/index.js",
   "scripts": {
@@ -28,7 +28,9 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-external-helpers": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
+    "@babel/runtime": "^7.9.6",
     "babel-eslint": "^10.1.0",
     "babel-preset-latest": "^6.24.1",
     "cross-env": "^7.0.2",
