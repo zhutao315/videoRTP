@@ -1,6 +1,7 @@
 import babel from 'rollup-plugin-babel'
 import resolve from 'rollup-plugin-node-resolve'
 import { uglify } from 'rollup-plugin-uglify'
+import commonjs from 'rollup-plugin-commonjs'
 
 export default (configs) => {
   return configs.map((config) => {
@@ -23,6 +24,7 @@ export default (configs) => {
           runtimeHelpers: true,
           exclude: ['node_modules/**'],
         }),
+        commonjs(),
         config.env === 'prod' && uglify(),
       ],
     }

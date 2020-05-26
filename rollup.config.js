@@ -5,7 +5,7 @@ export default rollup([
   { input: 'src/index.js', file: 'lib/index.min.js', env: 'prod' },
 
   { input: 'src/index.js', file: 'videoRTP.min.js', name: 'videoRTP', format: 'umd', env: 'prod' },
-  { input: 'src/index.js', file: 'videoRTP.js', name: 'videoRTP', format: 'umd' },
+  { input: 'src/index.js', file: 'videoRTP.js', name: 'videoRTP', format: 'iife' },
 
   { input: 'src/pressVideo.js', file: 'lib/pressVideo.js' },
   { input: 'src/pressVideo.js', file: 'lib/pressVideo.min.js', env: 'prod' },
