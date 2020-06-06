@@ -13,11 +13,13 @@ const URL = window.URL || window.webkitURL
 // 页面上创建一个video用于抽帧
 function createPlayVideo() {
   const video = document.createElement('video')
-  // video1.style.display = "none";
   video.setAttribute('width', config.width)
   video.setAttribute('height', config.height)
   video.style.width = config.width
   video.style.height = config.height
+  video.style.visibility = 'hidden'
+  video.style.position = 'fixed'
+  video.style.zIndex = -99999
   video.muted = true
   document.body.append(video)
   return video
@@ -47,7 +49,7 @@ export default async function pressVideo(videoFile, cb, options) {
   try {
     options && Object.assign(config, options) // 自定义配置
 
-    const video = createPlayVideo()
+    let video = createPlayVideo()
 
     // 视频太小，可直接返回文件
     if (videoFile.size < config.MINSIZE) {
@@ -55,8 +57,6 @@ export default async function pressVideo(videoFile, cb, options) {
       cb && cb(videoFile)
       return videoFile
     }
-
-    const record = CanvasRecord(video, cb, options) // 监听play事件，准备录屏
 
     video.onloadedmetadata = function () {
       if (video.duration > config.MAXTIME) {
@@ -67,7 +67,18 @@ export default async function pressVideo(videoFile, cb, options) {
     }
 
     video.src = await getFileURL(videoFile)
-    video.play()
+
+    const record = CanvasRecord(video, cb, options) // 监听play事件，准备录屏
+
+    record.ondataavailable = cb
+
+    record.onstop = () => {
+      document.body.removeChild(video)
+      video = null
+      config.ended && config.ended()
+    }
+
+    record.start()
 
     return record
   } catch (e) {

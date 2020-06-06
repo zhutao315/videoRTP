@@ -4,7 +4,7 @@ import getVideo from './getVideo'
 import pressVideo from './pressVideo'
 
 export function webrtcSurport() {
-  return !navigator.mediaDevices.getUserMedia
+  return !!navigator.mediaDevices.getUserMedia
 }
 function getDOM(dom) {
   if (typeof dom === 'string') return (dom = document.querySelector(dom))

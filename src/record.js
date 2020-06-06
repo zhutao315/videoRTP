@@ -85,62 +85,56 @@ export function RTCRecord(mediaStream, cb, config = {}) {
  */
 export function CanvasRecord(video, cb, options = {}) {
   let timer = null
-  let endFunc = null
-  const promise = new Promise((resolve) => (endFunc = resolve))
-
+  const videoHeight = video.videoHeight || video.clientHeight
+  const videoWidth = video.videoWidth || video.clientWidth
+  const record = {
+    ondataavailable() {},
+    onstop() {},
+    stop: stopRecord,
+    start() {
+      video.play()
+    },
+  }
   // 视频开始播放
   video.addEventListener('canplay', startRecord, false)
 
   // 视频播放完
   video.addEventListener('ended', endRecord, false)
 
-  function getVideoHeight() {
-    return video.videoHeight || video.clientHeight
-  }
-  function getVideoWidth() {
-    return video.videoWidth || video.clientWidth
-  }
+  let canvas = document.createElement('canvas')
+  canvas.style.display = 'none'
+  canvas.setAttribute('height', videoHeight)
+  canvas.setAttribute('width', videoWidth)
 
-  function getCanvas() {
-    const canvas = document.createElement('canvas')
-    canvas.style.display = 'none'
-    canvas.setAttribute('height', getVideoHeight())
-    canvas.setAttribute('width', getVideoWidth())
-    document.body.append(canvas)
-    return canvas
+  function recordFunc() {
+    const context = canvas.getContext('2d')
+    context.drawImage(video, 0, 0, videoHeight, videoWidth)
+    canvas.toBlob((blob) => {
+      record.ondataavailable(blob, context)
+    }, 'image/webp')
   }
 
   function startRecord() {
-    const canvas = getCanvas()
-    const context = canvas.getContext('2d')
-    const videoHeight = getVideoHeight()
-    const videoWidth = getVideoWidth()
+    recordFunc()
     timer = setInterval(() => {
-      context.drawImage(video, 0, 0, videoHeight, videoWidth)
-      canvas.toBlob((blob) => {
-        cb && cb(blob)
-      }, 'image/webp')
-      // cb && cb(canvas.toDataURL('image/webp'))
+      recordFunc()
     }, options.duration || 200)
   }
 
   function endRecord() {
-    cancel()
-    endFunc()
-    console.log('视频播放完毕！')
+    stopRecord()
+    record.onstop()
+    console.log('视频录制结束!')
   }
 
-  function cancel() {
+  function stopRecord() {
     timer && clearInterval(timer)
     video.removeEventListener('canplay', startRecord, false)
     video.removeEventListener('ended', endRecord, false)
-    options.ended && options.ended()
+    canvas = null
   }
 
-  return {
-    stop: cancel,
-    canvasRecordPromise: promise,
-  }
+  return record
 }
 
 /**
