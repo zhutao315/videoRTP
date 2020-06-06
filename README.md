@@ -61,10 +61,68 @@ const record = await openVideo({
     console.log('record chunks ended')
     wsP.then(ws => ws.send(0))
     },
-    degrade:document.getElementById('p') // 不支持webRTC则降级处理打开本地视频
+    degrade:true // 不支持webRTC则降级处理打开本地视频
 })
 
 ```
+
+## How to save recordings?
+
+```javascript
+import {webrtcSurport, openVideo} from 'video-rtp'
+import Whammy from 'whammy'
+
+let video = null
+const encoder = new Whammy.Video(15);
+openVideo({
+    /* .....*/
+    chunks(blobs, canvas) {
+        // save webm/webp to blobs
+        encoder.add(canvas)
+    },
+    ended() {
+        // create video by blobs
+        if (webrtcSurport()) {
+            video = new Blob(blobs, {type: 'video/webm;codecs=vp9'});
+        }else {
+            video = encoder.compile()
+        }
+    },
+    degrade:document.getElementById('p') // 不支持webRTC则降级处理打开本地视频
+})
+```
+
+## DEMO
+
+Local video compression and upload
+
+WEB push and pull stream, mock live broadcast
+
+[https://github.com/zhutao315/videoRTP-example](https://github.com/zhutao315/videoRTP-example)
+
+```
+npm install && npm start
+```
+
+open localhost:3000
+
+
+# API Documentation
+
+| Name                   | Type          | Default       | Description                                                                                                                                               |
+| ---------------| ------------- | ------------- | ---------------------------------------------------------------|
+| `video`        |  String/DOM  |       -       | Display video recorded by the camera |
+| `duration`        |  Number  |       100(ms)       | The time interval when Canvas draws frames |
+| `collectTime`        |  Number  |       1000(ms)      | The time length of chunks by mediaRecord record |
+| `MINSIZE`        |  Number  |       1M       | If the video size is lower than this value, the video will be returned without processing |
+| `MAXTIME`        |  Number  |       15(m)      | The Maximum duration of the upload video  |
+| `chunks`        |  Function  |       () => { }       | The callback Function executed each time when the screen is recorded.<br> The param is a blob and the blob's type is webm/webp |
+| `ended`        |  Function  |       () => { }       | The callback Function executed when the record is end |
+| `degrade`        |  String/DOM/Boolen  |       -       | The degrage is usefull when the webRTC is not supported |
+
+
+> When the "degrade" is a string, the component will find the DOM by id/class. The dom will bind a click event to open the local video. When the value of "degrade" is true, the openVideo function will open the local video directly. 
+
 
 ## How to manually stop recordings?
 
@@ -83,54 +141,6 @@ record.pause();
 ```javascript
 record.resume();
 ```
-
-## How to save recordings?
-
-```javascript
-import {webrtcSurport, openVideo} from 'video-rtp'
-import Whammy from 'whammy'
-
-let video = null
-const blobs = []
-openVideo({
-    /* .....*/
-    chunks(chunk) {
-        // save webm/webp to blobs
-        blobs.push(chunk)
-    },
-    ended() {
-        // create video by blobs
-        if (webrtcSurport()) {
-            video = new Blob(blobs, {type: 'video/webm;codecs=vp9'});
-        }else {
-            video = Whammy.fromImageArray(blobs, 15)
-        }
-    },
-    degrade:document.getElementById('p') // 不支持webRTC则降级处理打开本地视频
-})
-```
-
-## Upload to Server
-
-
-## How to handle the blobs on Server
-
-
-# API Documentation
-
-| Name                   | Type          | Default       | Description                                                                                                                                               |
-| ---------------| ------------- | ------------- | ---------------------------------------------------------------|
-| `video`        |  String/DOM  |       -       | Display video recorded by the camera |
-| `duration`        |  Number  |       100(ms)       | The time interval when Canvas draws frames |
-| `collectTime`        |  Number  |       1000(ms)      | The time length of chunks by mediaRecord record |
-| `MINSIZE`        |  Number  |       1M       | If the video size is lower than this value, the video will be returned without processing |
-| `MAXTIME`        |  Number  |       15(m)      | The Maximum duration of the upload video  |
-| `chunks`        |  Function  |       () => { }       | The callback Function executed each time when the screen is recorded.<br> The param is a blob and the blob's type is webm/webp |
-| `ended`        |  Function  |       () => { }       | The callback Function executed when the record is end |
-| `degrade`        |  String/DOM/Boolen  |       -       | The degrage is usefull when the webRTC is not supported |
-
-
-> When the "degrade" is a string, the component will find the DOM by id/class. The dom will bind a click event to open the local video. When the value of "degrade" is true, the openVideo function will open the local video directly. 
 
 ## License
 
